@@ -56,7 +56,7 @@ class TeamController extends Controller
             'name' => ['required', 'string', 'max:80'],
         ]);
 
-        Team::create(['name' => $request->name]);
+        Team::create(['name' => $request->name, 'flag' => '']);
 
         return redirect()->route('admin.teams.index')->with('success', 'Time cadastrado!');
     }
