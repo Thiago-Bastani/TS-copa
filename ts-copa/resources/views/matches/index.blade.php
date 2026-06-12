@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.5rem">
@@ -23,9 +23,7 @@
             </div>
 
             <div class="match-teams">
-                <div class="team-side">
-                    <span class="team-flag">{{ $match->homeTeam->flag }}</span>
-                    <span class="team-name">{{ $match->homeTeam->name }}</span>
+                <div class="team-side">                    <span class="team-name">{{ $match->homeTeam->name }}</span>
                 </div>
                 <div class="score-display">
                     @if($match->isFinished())
@@ -38,9 +36,7 @@
                         <span style="color:var(--muted);font-size:1rem">VS</span>
                     @endif
                 </div>
-                <div class="team-side">
-                    <span class="team-flag">{{ $match->awayTeam->flag }}</span>
-                    <span class="team-name">{{ $match->awayTeam->name }}</span>
+                <div class="team-side">                    <span class="team-name">{{ $match->awayTeam->name }}</span>
                 </div>
             </div>
 

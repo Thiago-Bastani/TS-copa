@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div class="tabs">
@@ -20,7 +20,7 @@
             <select name="home_team_id" required>
                 <option value="">Selecione</option>
                 @foreach($teams as $t)
-                    <option value="{{ $t->id }}" {{ old('home_team_id') == $t->id ? 'selected' : '' }}>{{ $t->flag }} {{ $t->name }}</option>
+                    <option value="{{ $t->id }}" {{ old('home_team_id') == $t->id ? 'selected' : '' }}>{{ $t->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -29,7 +29,7 @@
             <select name="away_team_id" required>
                 <option value="">Selecione</option>
                 @foreach($teams as $t)
-                    <option value="{{ $t->id }}" {{ old('away_team_id') == $t->id ? 'selected' : '' }}>{{ $t->flag }} {{ $t->name }}</option>
+                    <option value="{{ $t->id }}" {{ old('away_team_id') == $t->id ? 'selected' : '' }}>{{ $t->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -37,7 +37,7 @@
             <label>Data/Hora</label>
             <input type="datetime-local" name="match_date" value="{{ old('match_date') }}" required>
         </div>
-        <div style="padding-bottom:.05rem">
+        <div>
             <button type="submit" class="btn btn-primary">Criar</button>
         </div>
     </form>
@@ -49,18 +49,14 @@
     @foreach($matches as $match)
     <div class="match-card">
         <div class="match-meta">
-            <div>
-                <span class="badge badge-{{ $match->status }}">
-                    {{ ['apostas'=>'Apostas abertas','em_andamento'=>'Em andamento','finalizado'=>'Finalizado'][$match->status] }}
-                </span>
-            </div>
+            <span class="badge badge-{{ $match->status }}">
+                {{ ['apostas'=>'Apostas abertas','em_andamento'=>'Em andamento','finalizado'=>'Finalizado'][$match->status] }}
+            </span>
             <span class="match-date">{{ $match->match_date->format('d/m/Y H:i') }}</span>
         </div>
 
         <div class="match-teams">
-            <div class="team-side">
-                <span class="team-flag">{{ $match->homeTeam->flag }}</span>
-                <span class="team-name">{{ $match->homeTeam->name }}</span>
+            <div class="team-side">                <span class="team-name">{{ $match->homeTeam->name }}</span>
             </div>
             <div class="score-display">
                 @if($match->isFinished())
@@ -71,14 +67,11 @@
                     <span style="color:var(--muted);font-size:1rem">VS</span>
                 @endif
             </div>
-            <div class="team-side">
-                <span class="team-flag">{{ $match->awayTeam->flag }}</span>
-                <span class="team-name">{{ $match->awayTeam->name }}</span>
+            <div class="team-side">                <span class="team-name">{{ $match->awayTeam->name }}</span>
             </div>
         </div>
 
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem">
-            {{-- Status transition --}}
             @if($match->status === 'apostas')
                 <form method="POST" action="{{ route('admin.matches.updateStatus', $match) }}">
                     @csrf @method('PATCH')
@@ -89,11 +82,9 @@
             @if($match->status === 'em_andamento')
                 <a href="{{ route('admin.matches.result', $match) }}" class="btn btn-sm btn-success">✔ Lançar resultado</a>
             @endif
-            @if($match->status === 'apostas' || $match->status === 'em_andamento')
-                <a href="{{ route('matches.show', $match) }}" class="btn btn-sm btn-outline">Ver palpites</a>
-            @else
-                <a href="{{ route('matches.show', $match) }}" class="btn btn-sm btn-outline">Ver resultado</a>
-            @endif
+            <a href="{{ route('matches.show', $match) }}" class="btn btn-sm btn-outline">
+                {{ $match->isFinished() ? 'Ver resultado' : 'Ver palpites' }}
+            </a>
             <form method="POST" action="{{ route('admin.matches.destroy', $match) }}" onsubmit="return confirm('Remover esta partida?')">
                 @csrf @method('DELETE')
                 <button class="btn btn-sm btn-danger" type="submit">Remover</button>

@@ -18,12 +18,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $teams = [
-            ['name' => 'Brasil',    'flag' => 'br'],
-            ['name' => 'Argentina', 'flag' => 'ar'],
-            ['name' => 'França',    'flag' => 'fr'],
-            ['name' => 'Portugal',  'flag' => 'pt'],
-            ['name' => 'Alemanha',  'flag' => 'de'],
-            ['name' => 'Espanha',   'flag' => 'es'],
+            ['name' => 'Brasil',    'flag' => '🇧🇷'],
+            ['name' => 'Argentina', 'flag' => '🇦🇷'],
+            ['name' => 'França',    'flag' => '🇫🇷'],
+            ['name' => 'Portugal',  'flag' => '🇵🇹'],
+            ['name' => 'Alemanha',  'flag' => '🇩🇪'],
+            ['name' => 'Espanha',   'flag' => '🇪🇸'],
         ];
 
         foreach ($teams as $t) {

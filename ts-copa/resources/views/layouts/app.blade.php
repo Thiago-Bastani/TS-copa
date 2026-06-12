@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TS Copa</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
-    <style>
-        .fi { font-size: 2rem; border-radius: 3px; }
-        .fi-sm { font-size: 1.1rem; }
-    </style>
     <style>
         :root {
             --primary: #E8801E;
@@ -89,7 +84,6 @@
         .match-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,.08); }
         .match-teams { display: flex; align-items: center; justify-content: center; gap: 1rem; margin: .75rem 0; }
         .team-side { display: flex; flex-direction: column; align-items: center; gap: .35rem; flex: 1; }
-        .team-flag { font-size: 2.2rem; line-height: 1; }
         .team-name { font-size: .82rem; font-weight: 700; text-align: center; }
         .score-display { display: flex; align-items: center; gap: .5rem; font-size: 1.6rem; font-weight: 900; color: var(--dark); }
         .score-sep { color: var(--muted); font-weight: 400; font-size: 1.2rem; }
@@ -139,7 +133,6 @@
             .header-inner { flex-wrap: wrap; height: auto; padding: .75rem 0; gap: .5rem; }
             nav { flex-wrap: wrap; gap: .5rem; }
             .match-teams { gap: .5rem; }
-            .team-flag { font-size: 1.6rem; }
         }
     </style>
 </head>
@@ -157,7 +150,6 @@
                     @if(auth()->user()->isAdmin())
                         <a href="{{ route('admin.teams.index') }}" class="{{ request()->routeIs('admin.teams.*') ? 'active' : '' }}">Times</a>
                         <a href="{{ route('admin.matches.index') }}" class="{{ request()->routeIs('admin.matches.*') ? 'active' : '' }}">Partidas</a>
-                        <a href="{{ route('matches.index') }}">Ver como user</a>
                     @else
                         <a href="{{ route('matches.index') }}" class="{{ request()->routeIs('matches.*') ? 'active' : '' }}">Partidas</a>
                     @endif

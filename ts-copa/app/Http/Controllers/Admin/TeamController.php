@@ -8,43 +8,40 @@ use Illuminate\Http\Request;
 
 class TeamController extends Controller
 {
-    // ISO 3166-1 alpha-2 codes (lowercase) => country name
     public static array $flags = [
-        'br' => 'Brasil',
-        'ar' => 'Argentina',
-        'fr' => 'França',
-        'de' => 'Alemanha',
-        'es' => 'Espanha',
-        'pt' => 'Portugal',
-        'gb-eng' => 'Inglaterra',
-        'it' => 'Itália',
-        'nl' => 'Holanda',
-        'be' => 'Bélgica',
-        'uy' => 'Uruguai',
-        'co' => 'Colômbia',
-        'cl' => 'Chile',
-        'mx' => 'México',
-        'us' => 'Estados Unidos',
-        'jp' => 'Japão',
-        'kr' => 'Coreia do Sul',
-        'au' => 'Austrália',
-        'sa' => 'Arábia Saudita',
-        'ma' => 'Marrocos',
-        'sn' => 'Senegal',
-        'gh' => 'Gana',
-        'ng' => 'Nigéria',
-        'ca' => 'Canadá',
-        'ec' => 'Equador',
-        'pa' => 'Panamá',
-        'cr' => 'Costa Rica',
-        'pl' => 'Polônia',
-        'ch' => 'Suíça',
-        'dk' => 'Dinamarca',
-        'se' => 'Suécia',
-        'tn' => 'Tunísia',
-        'hr' => 'Croácia',
-        'rs' => 'Sérvia',
-        'cm' => 'Camarões',
+        '🇧🇷' => 'Brasil',
+        '🇦🇷' => 'Argentina',
+        '🇫🇷' => 'França',
+        '🇩🇪' => 'Alemanha',
+        '🇪🇸' => 'Espanha',
+        '🇵🇹' => 'Portugal',
+        '🏴󠁧󠁢󠁥󠁮󠁧󠁿' => 'Inglaterra',
+        '🇮🇹' => 'Itália',
+        '🇳🇱' => 'Holanda',
+        '🇧🇪' => 'Bélgica',
+        '🇺🇾' => 'Uruguai',
+        '🇨🇴' => 'Colômbia',
+        '🇨🇱' => 'Chile',
+        '🇲🇽' => 'México',
+        '🇺🇸' => 'Estados Unidos',
+        '🇨🇦' => 'Canadá',
+        '🇯🇵' => 'Japão',
+        '🇰🇷' => 'Coreia do Sul',
+        '🇦🇺' => 'Austrália',
+        '🇸🇦' => 'Arábia Saudita',
+        '🇲🇦' => 'Marrocos',
+        '🇸🇳' => 'Senegal',
+        '🇬🇭' => 'Gana',
+        '🇳🇬' => 'Nigéria',
+        '🇪🇨' => 'Equador',
+        '🇵🇱' => 'Polônia',
+        '🇨🇭' => 'Suíça',
+        '🇩🇰' => 'Dinamarca',
+        '🇸🇪' => 'Suécia',
+        '🇭🇷' => 'Croácia',
+        '🇷🇸' => 'Sérvia',
+        '🇹🇳' => 'Tunísia',
+        '🇨🇲' => 'Camarões',
     ];
 
     public function index()
@@ -57,12 +54,11 @@ class TeamController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:80'],
-            'flag' => ['required', 'string'],
         ]);
 
-        Team::create($request->only('name', 'flag'));
+        Team::create(['name' => $request->name]);
 
-        return redirect()->route('admin.teams.index')->with('success', 'Time cadastrado com sucesso!');
+        return redirect()->route('admin.teams.index')->with('success', 'Time cadastrado!');
     }
 
     public function destroy(Team $team)

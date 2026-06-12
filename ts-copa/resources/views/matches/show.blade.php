@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div style="margin-bottom:1rem"><a href="{{ route('matches.index') }}" style="color:var(--primary);text-decoration:none;font-weight:600">← Voltar</a></div>
@@ -16,9 +16,7 @@
     </div>
 
     <div class="match-teams" style="margin:.75rem 0">
-        <div class="team-side">
-            <span class="team-flag" style="font-size:3rem">{{ $match->homeTeam->flag }}</span>
-            <span class="team-name" style="font-size:1rem">{{ $match->homeTeam->name }}</span>
+        <div class="team-side">            <span class="team-name" style="font-size:1rem">{{ $match->homeTeam->name }}</span>
         </div>
         <div class="score-display" style="font-size:2.2rem">
             @if($match->isFinished())
@@ -29,9 +27,7 @@
                 <span style="color:var(--muted);font-size:1.1rem">VS</span>
             @endif
         </div>
-        <div class="team-side">
-            <span class="team-flag" style="font-size:3rem">{{ $match->awayTeam->flag }}</span>
-            <span class="team-name" style="font-size:1rem">{{ $match->awayTeam->name }}</span>
+        <div class="team-side">            <span class="team-name" style="font-size:1rem">{{ $match->awayTeam->name }}</span>
         </div>
     </div>
 </div>
