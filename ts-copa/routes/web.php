@@ -36,6 +36,8 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     Route::get('/matches',            [AdminMatchController::class, 'index'])->name('matches.index');
     Route::post('/matches',           [AdminMatchController::class, 'store'])->name('matches.store');
     Route::delete('/matches/{match}', [AdminMatchController::class, 'destroy'])->name('matches.destroy');
+    Route::get('/matches/{match}/edit',    [AdminMatchController::class, 'editForm'])->name('matches.edit');
+    Route::put('/matches/{match}',         [AdminMatchController::class, 'update'])->name('matches.update');
     Route::get('/matches/{match}/result',  [AdminMatchController::class, 'resultForm'])->name('matches.result');
     Route::post('/matches/{match}/result', [AdminMatchController::class, 'storeResult'])->name('matches.storeResult');
     Route::patch('/matches/{match}/status',[AdminMatchController::class, 'updateStatus'])->name('matches.updateStatus');

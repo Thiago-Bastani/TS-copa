@@ -37,6 +37,10 @@
             <label>Data/Hora</label>
             <input type="datetime-local" name="match_date" value="{{ old('match_date') }}" required>
         </div>
+        <div class="form-group" style="flex:1;min-width:130px;margin:0">
+            <label>Valor da Aposta (R$)</label>
+            <input type="number" name="bet_value" min="0" step="0.01" value="{{ old('bet_value') }}" placeholder="0.00">
+        </div>
         <div>
             <button type="submit" class="btn btn-primary">Criar</button>
         </div>
@@ -52,7 +56,12 @@
             <span class="badge badge-{{ $match->status }}">
                 {{ ['apostas'=>'Apostas abertas','em_andamento'=>'Em andamento','finalizado'=>'Finalizado'][$match->status] }}
             </span>
-            <span class="match-date">{{ $match->match_date->format('d/m/Y H:i') }}</span>
+            <div style="display:flex;align-items:center;gap:.75rem">
+                @if($match->bet_value)
+                    <span style="font-size:.8rem;font-weight:700;color:var(--primary)">R$ {{ number_format($match->bet_value, 2, ',', '.') }}</span>
+                @endif
+                <span class="match-date">{{ $match->match_date->format('d/m/Y H:i') }}</span>
+            </div>
         </div>
 
         <div class="match-teams">
@@ -82,6 +91,7 @@
             @if($match->status === 'em_andamento')
                 <a href="{{ route('admin.matches.result', $match) }}" class="btn btn-sm btn-success">✔ Lançar resultado</a>
             @endif
+            <a href="{{ route('admin.matches.edit', $match) }}" class="btn btn-sm btn-outline">Editar</a>
             <a href="{{ route('matches.show', $match) }}" class="btn btn-sm btn-outline">
                 {{ $match->isFinished() ? 'Ver resultado' : 'Ver palpites' }}
             </a>

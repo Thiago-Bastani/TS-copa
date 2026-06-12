@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bet;
 use App\Models\GameMatch;
 use App\Models\Team;
 use Illuminate\Http\Request;
@@ -22,12 +23,14 @@ class MatchController extends Controller
             'home_team_id' => ['required', 'exists:teams,id'],
             'away_team_id' => ['required', 'exists:teams,id', 'different:home_team_id'],
             'match_date'   => ['required', 'date'],
+            'bet_value'    => ['nullable', 'numeric', 'min:0'],
         ]);
 
         GameMatch::create([
             'home_team_id' => $request->home_team_id,
             'away_team_id' => $request->away_team_id,
             'match_date'   => $request->match_date,
+            'bet_value'    => $request->bet_value ?: null,
             'status'       => 'apostas',
         ]);
 
@@ -36,8 +39,34 @@ class MatchController extends Controller
 
     public function destroy(GameMatch $match)
     {
+        Bet::where('match_id', $match->id)->delete();
         $match->delete();
         return redirect()->route('admin.matches.index')->with('success', 'Partida removida.');
+    }
+
+    public function editForm(GameMatch $match)
+    {
+        $teams = Team::orderBy('name')->get();
+        return view('admin.matches.edit', compact('match', 'teams'));
+    }
+
+    public function update(Request $request, GameMatch $match)
+    {
+        $request->validate([
+            'home_team_id' => ['required', 'exists:teams,id'],
+            'away_team_id' => ['required', 'exists:teams,id', 'different:home_team_id'],
+            'match_date'   => ['required', 'date'],
+            'bet_value'    => ['nullable', 'numeric', 'min:0'],
+        ]);
+
+        $match->update([
+            'home_team_id' => $request->home_team_id,
+            'away_team_id' => $request->away_team_id,
+            'match_date'   => $request->match_date,
+            'bet_value'    => $request->bet_value ?: null,
+        ]);
+
+        return redirect()->route('admin.matches.index')->with('success', 'Partida atualizada!');
     }
 
     public function resultForm(GameMatch $match)
@@ -70,7 +99,6 @@ class MatchController extends Controller
             'status' => ['required', 'in:' . implode(',', $allowed)],
         ]);
 
-        // finalizado só via storeResult (precisa de scores)
         if ($request->status === 'finalizado') {
             return redirect()->route('admin.matches.result', $match);
         }

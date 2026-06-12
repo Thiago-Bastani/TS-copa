@@ -19,7 +19,12 @@
                 <span class="badge badge-{{ $match->status }}">
                     {{ ['apostas'=>'Apostas abertas','em_andamento'=>'Em andamento','finalizado'=>'Finalizado'][$match->status] }}
                 </span>
-                <span class="match-date">{{ $match->match_date->format('d/m/Y H:i') }}</span>
+                <div style="display:flex;align-items:center;gap:.75rem">
+                    @if($match->bet_value)
+                        <span style="font-size:.8rem;font-weight:700;color:var(--primary)">R$ {{ number_format($match->bet_value, 2, ',', '.') }}</span>
+                    @endif
+                    <span class="match-date">{{ $match->match_date->format('d/m/Y H:i') }}</span>
+                </div>
             </div>
 
             <div class="match-teams">

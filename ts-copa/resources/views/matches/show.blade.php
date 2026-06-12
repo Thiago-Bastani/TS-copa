@@ -13,6 +13,9 @@
             {{ ['apostas'=>'Apostas abertas','em_andamento'=>'Em andamento','finalizado'=>'Finalizado'][$match->status] }}
         </span>
         <span class="match-date" style="margin-left:.75rem">{{ $match->match_date->format('d/m/Y \à\s H:i') }}</span>
+        @if($match->bet_value)
+            <div style="margin-top:.4rem;font-size:.85rem;font-weight:700;color:var(--primary)">Valor da aposta: R$ {{ number_format($match->bet_value, 2, ',', '.') }}</div>
+        @endif
     </div>
 
     <div class="match-teams" style="margin:.75rem 0">
