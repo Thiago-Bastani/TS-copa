@@ -6,6 +6,8 @@ class PixPayload
 {
     public static function static(string $pixKey, float $amount, string $description = ''): string
     {
+        $pixKey = trim($pixKey);
+        $pixKey = str_replace([' ', '-', '.'], '', $pixKey);
         $merchantName = mb_substr($description ?: 'TS Copa', 0, 25);
         $merchantCity = 'BRASIL';
 

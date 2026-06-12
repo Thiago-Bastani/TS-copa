@@ -24,12 +24,18 @@
             </div>
             <div class="form-group">
                 <label>Senha</label>
-                <input type="password" name="password" placeholder="mínimo 6 caracteres" autocomplete="new-password">
+                <div class="input-eye">
+                    <input type="password" name="password" placeholder="mínimo 6 caracteres" autocomplete="new-password">
+                    <button type="button" class="eye-btn" onclick="togglePassword(this)">@include('partials.eye-icon')</button>
+                </div>
                 @error('password')<div class="error-msg">{{ $message }}</div>@enderror
             </div>
             <div class="form-group">
                 <label>Confirmar Senha</label>
-                <input type="password" name="password_confirmation" placeholder="repita a senha" autocomplete="new-password">
+                <div class="input-eye">
+                    <input type="password" name="password_confirmation" placeholder="repita a senha" autocomplete="new-password">
+                    <button type="button" class="eye-btn" onclick="togglePassword(this)">@include('partials.eye-icon')</button>
+                </div>
             </div>
             <div class="form-group">
                 <label>Chave PIX</label>

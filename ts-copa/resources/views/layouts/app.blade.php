@@ -128,6 +128,12 @@
         .auth-footer { text-align: center; margin-top: 1.25rem; font-size: .85rem; color: var(--muted); }
         .auth-footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
 
+        /* Eye toggle */
+        .input-eye { position: relative; }
+        .input-eye input { padding-right: 2.5rem; }
+        .eye-btn { position: absolute; right: .65rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--muted); padding: 0; display: flex; align-items: center; }
+        .eye-btn:hover { color: var(--dark); }
+
         /* Responsive */
         @media (max-width: 520px) {
             .header-inner { flex-wrap: wrap; height: auto; padding: .75rem 0; gap: .5rem; }
@@ -166,5 +172,21 @@
     <main class="{{ auth()->check() ? 'main' : '' }}">
         @yield('content')
     </main>
+<script>
+function togglePassword(btn) {
+    var input = btn.closest('.input-eye').querySelector('input');
+    var open  = btn.querySelector('.eye-open');
+    var shut  = btn.querySelector('.eye-shut');
+    if (input.type === 'password') {
+        input.type = 'text';
+        open.style.display = 'none';
+        shut.style.display = '';
+    } else {
+        input.type = 'password';
+        open.style.display = '';
+        shut.style.display = 'none';
+    }
+}
+</script>
 </body>
 </html>

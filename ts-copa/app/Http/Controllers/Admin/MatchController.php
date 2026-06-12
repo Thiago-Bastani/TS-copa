@@ -79,13 +79,11 @@ class MatchController extends Controller
         $request->validate([
             'home_score' => ['required', 'integer', 'min:0'],
             'away_score' => ['required', 'integer', 'min:0'],
-            'prize_pool' => ['required', 'numeric', 'min:0'],
         ]);
 
         $match->update([
             'home_score' => $request->home_score,
             'away_score' => $request->away_score,
-            'prize_pool' => $request->prize_pool,
             'status'     => 'finalizado',
         ]);
 

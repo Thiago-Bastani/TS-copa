@@ -21,7 +21,10 @@
             </div>
             <div class="form-group">
                 <label>Senha</label>
-                <input type="password" name="password" placeholder="••••••" autocomplete="current-password">
+                <div class="input-eye">
+                    <input type="password" name="password" placeholder="••••••" autocomplete="current-password">
+                    <button type="button" class="eye-btn" onclick="togglePassword(this)">@include('partials.eye-icon')</button>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary btn-block" style="margin-top:.5rem">Entrar</button>
         </form>
