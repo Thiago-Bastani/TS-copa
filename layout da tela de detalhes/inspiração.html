@@ -1,0 +1,624 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolão Copa do Mundo | Time.System</title>
+<style>
+  :root{
+    --ts-orange: #E8801E;
+    --ts-orange-dark: #C9690F;
+    --ts-dark: #2B2B2B;
+    --ts-gray: #6E6E6E;
+    --ts-light: #F7F5F2;
+    --ts-white: #FFFFFF;
+    --green: #1E8E3E;
+    --green-bg: #E7F6EC;
+    --red: #D93025;
+    --red-bg: #FDECEA;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--ts-light);
+    color: var(--ts-dark);
+  }
+
+  header{
+    background: var(--ts-white);
+    border-bottom: 4px solid var(--ts-orange);
+    padding: 16px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .logo{
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ts-dark);
+    line-height:1.1;
+  }
+  .logo span{
+    color: var(--ts-orange);
+  }
+  .logo small{
+    display:block;
+    font-size:12px;
+    font-weight:400;
+    color: var(--ts-gray);
+    letter-spacing: 1px;
+  }
+
+  .badge{
+    background: var(--ts-orange);
+    color:#fff;
+    padding:6px 14px;
+    border-radius: 20px;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  main{
+    max-width: 640px;
+    margin: 32px auto;
+    padding: 0 16px 60px;
+  }
+
+  .title{
+    text-align:center;
+    margin-bottom: 24px;
+  }
+  .title h1{
+    font-size: 26px;
+    margin:0 0 4px;
+    color: var(--ts-dark);
+  }
+  .title p{
+    color: var(--ts-gray);
+    font-size: 14px;
+    margin:0;
+  }
+
+  .card{
+    background: var(--ts-white);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .match-header{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    margin-bottom: 4px;
+  }
+  .league-tag{
+    background: var(--ts-light);
+    color: var(--ts-gray);
+    font-size:12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight:600;
+  }
+
+  .status-line{
+    text-align:center;
+    font-size: 13px;
+    color: var(--ts-gray);
+    margin-bottom: 18px;
+  }
+  .status-line.live{
+    color: var(--ts-orange-dark);
+    font-weight:700;
+  }
+
+  .teams-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  .team{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    min-width: 110px;
+  }
+  .team img{
+    width:48px;
+    height:48px;
+    object-fit:contain;
+  }
+  .team .name{
+    font-weight:700;
+    font-size:15px;
+    text-align:center;
+  }
+  .vs{
+    font-size:14px;
+    color: var(--ts-gray);
+    font-weight:700;
+  }
+
+  .guess-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .score-input{
+    width: 64px;
+    height: 64px;
+    text-align:center;
+    font-size: 28px;
+    font-weight:800;
+    border: 2px solid #E0DCD6;
+    border-radius: 10px;
+    color: var(--ts-dark);
+    background: var(--ts-light);
+    transition: border-color .15s, background .15s;
+  }
+  .score-input:focus{
+    outline:none;
+    border-color: var(--ts-orange);
+    background: #fff;
+  }
+  .score-input:disabled{
+    background: #F0EEEA;
+    color: var(--ts-gray);
+  }
+  .dash{
+    font-size: 28px;
+    font-weight:800;
+    color: var(--ts-gray);
+  }
+
+  .name-field{
+    margin-bottom: 18px;
+  }
+  .name-field label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:6px;
+    color: var(--ts-gray);
+  }
+  .name-field input{
+    width:100%;
+    padding: 12px 14px;
+    border: 2px solid #E0DCD6;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    background: var(--ts-light);
+  }
+  .name-field input:focus{
+    outline:none;
+    border-color: var(--ts-orange);
+    background:#fff;
+  }
+  .name-field input:disabled{
+    background: #F0EEEA;
+    color: var(--ts-gray);
+  }
+
+  .actions{
+    display:flex;
+    justify-content:center;
+  }
+  button.primary{
+    background: var(--ts-orange);
+    color:#fff;
+    border:none;
+    padding: 13px 32px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight:700;
+    cursor:pointer;
+    transition: background .15s, transform .05s;
+    letter-spacing: 0.3px;
+  }
+  button.primary:hover{ background: var(--ts-orange-dark); }
+  button.primary:active{ transform: scale(0.98); }
+  button.primary:disabled{
+    background: #D8D4CE;
+    cursor: not-allowed;
+  }
+
+  .lock-msg{
+    text-align:center;
+    font-size:13px;
+    color: var(--ts-orange-dark);
+    font-weight:600;
+    margin-top: 12px;
+  }
+  .saved-msg{
+    text-align:center;
+    font-size:13px;
+    color: var(--green);
+    font-weight:600;
+    margin-top: 12px;
+  }
+
+  .palpites-title{
+    font-size:16px;
+    font-weight:800;
+    margin: 0 0 14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .palpites-title .count{
+    background: var(--ts-orange);
+    color:#fff;
+    font-size:12px;
+    padding:2px 9px;
+    border-radius: 12px;
+    font-weight:700;
+  }
+
+  .palpite-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 2px solid transparent;
+  }
+  .palpite-item.pending{
+    background: var(--ts-light);
+    color: var(--ts-dark);
+  }
+  .palpite-item.correct{
+    background: var(--green-bg);
+    color: var(--green);
+    border-color: rgba(30,142,62,0.2);
+  }
+  .palpite-item.wrong{
+    background: var(--red-bg);
+    color: var(--red);
+    border-color: rgba(217,48,37,0.15);
+  }
+  .palpite-item .palpite-score{
+    font-weight:800;
+    font-size: 15px;
+  }
+
+  .empty{
+    text-align:center;
+    color: var(--ts-gray);
+    font-size: 14px;
+    padding: 12px 0;
+  }
+
+  footer{
+    text-align:center;
+    font-size:12px;
+    color: var(--ts-gray);
+    padding: 20px;
+  }
+
+  @media (max-width: 420px){
+    .team{ min-width: 90px; }
+    .team img{ width:40px; height:40px; }
+    .score-input{ width:54px; height:54px; font-size:24px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    time<span>.</span>system
+    <small>BOLÃO COPA DO MUNDO</small>
+  </div>
+  <div class="badge">Copa 2026</div>
+</header>
+
+<main>
+  <div class="title">
+    <h1>Faça seu palpite!</h1>
+    <p>Palpites abertos até 10 minutos antes do início da partida.</p>
+  </div>
+
+  <div class="card">
+    <div class="match-header">
+      <span class="league-tag" id="league-tag">Carregando partida...</span>
+    </div>
+    <div class="status-line" id="status-line">Buscando dados...</div>
+
+    <div class="teams-row" id="teams-row">
+      <div class="team">
+        <img id="home-logo" src="" alt="">
+        <div class="name" id="home-name">Canadá</div>
+      </div>
+      <div class="vs">x</div>
+      <div class="team">
+        <img id="away-logo" src="" alt="">
+        <div class="name" id="away-name">Bósnia</div>
+      </div>
+    </div>
+
+    <div class="name-field">
+      <label for="user-name">Seu nome</label>
+      <input type="text" id="user-name" placeholder="Digite seu nome">
+    </div>
+
+    <div class="guess-row">
+      <input type="number" min="0" max="20" class="score-input" id="home-guess" placeholder="0">
+      <span class="dash">x</span>
+      <input type="number" min="0" max="20" class="score-input" id="away-guess" placeholder="0">
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="save-btn">Salvar palpite</button>
+    </div>
+
+    <div id="message-area"></div>
+  </div>
+
+  <div class="card">
+    <div class="palpites-title">
+      Palpites registrados <span class="count" id="palpites-count">0</span>
+    </div>
+    <div id="palpites-list">
+      <div class="empty">Nenhum palpite registrado ainda.</div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  © Time.System — Bolão interno Copa do Mundo 2026
+</footer>
+
+<script>
+  // ======= CONFIGURAÇÃO =======
+  // Insira sua chave da API-Football (api-sports.io) aqui.
+  // Plano gratuito: https://www.api-football.com/ -> crie uma conta e copie a API-KEY do dashboard
+  const API_KEY = "SUA_API_KEY_AQUI";
+  const API_HOST = "v3.football.api-sports.io";
+
+  // ID do confronto Canadá x Bósnia (Copa do Mundo 2026).
+  // Caso não saiba o ID exato, deixe null e o script tentará localizar
+  // automaticamente pela busca de times + data, abaixo.
+  let FIXTURE_ID = null;
+
+  // Dados de fallback (usados caso a API não responda ou a chave não esteja configurada)
+  const FALLBACK_FIXTURE = {
+    teams: {
+      home: { name: "Canadá", logo: "https://media.api-sports.io/flags/ca.svg" },
+      away: { name: "Bósnia", logo: "https://media.api-sports.io/flags/ba.svg" }
+    },
+    fixture: {
+      date: "2026-06-12T18:00:00+00:00",
+      status: { short: "NS", long: "Not Started" }
+    },
+    league: { name: "Copa do Mundo FIFA 2026" },
+    goals: { home: null, away: null }
+  };
+
+  // Chave de armazenamento local (compartilhada entre quem acessa o mesmo link/navegador)
+  const STORAGE_KEY = "bolao_ts_canada_bosnia_v1";
+
+  let currentFixture = null;
+
+  // ======= BUSCA DE DADOS DA API =======
+  async function fetchFixture() {
+    if (!API_KEY || API_KEY === "SUA_API_KEY_AQUI") {
+      currentFixture = FALLBACK_FIXTURE;
+      renderMatch();
+      return;
+    }
+
+    try {
+      let url;
+      if (FIXTURE_ID) {
+        url = `https://${API_HOST}/fixtures?id=${FIXTURE_ID}`;
+      } else {
+        // Busca por confrontos da Copa do Mundo 2026 (league 1) envolvendo Canadá
+        url = `https://${API_HOST}/fixtures?league=1&season=2026&team=33`; // ajuste o ID do time conforme necessário
+      }
+
+      const res = await fetch(url, {
+        headers: {
+          "x-apisports-key": API_KEY
+        }
+      });
+      const data = await res.json();
+
+      if (data.response && data.response.length > 0) {
+        // Tenta achar o confronto contra a Bósnia
+        let match = data.response.find(f =>
+          (f.teams.home.name.includes("Bosnia") || f.teams.home.name.includes("Bósnia") ||
+           f.teams.away.name.includes("Bosnia") || f.teams.away.name.includes("Bósnia"))
+        );
+        currentFixture = match || data.response[0];
+      } else {
+        currentFixture = FALLBACK_FIXTURE;
+      }
+    } catch (e) {
+      console.error("Erro ao buscar dados da API:", e);
+      currentFixture = FALLBACK_FIXTURE;
+    }
+
+    renderMatch();
+  }
+
+  // ======= RENDER DA PARTIDA =======
+  function renderMatch() {
+    const f = currentFixture;
+    document.getElementById("home-name").textContent = f.teams.home.name;
+    document.getElementById("away-name").textContent = f.teams.away.name;
+    document.getElementById("home-logo").src = f.teams.home.logo || "";
+    document.getElementById("away-logo").src = f.teams.away.logo || "";
+    document.getElementById("league-tag").textContent = f.league.name;
+
+    const status = f.fixture.status.short;
+    const statusEl = document.getElementById("status-line");
+    const matchDate = new Date(f.fixture.date);
+    const formattedDate = matchDate.toLocaleString("pt-BR", {
+      day: "2-digit", month: "2-digit", year: "numeric",
+      hour: "2-digit", minute: "2-digit"
+    });
+
+    if (status === "NS") {
+      statusEl.textContent = `Jogo ainda não iniciado — ${formattedDate}`;
+      statusEl.classList.remove("live");
+    } else if (["1H","HT","2H","ET","P","LIVE"].includes(status)) {
+      statusEl.textContent = `🔴 Em andamento — Placar atual: ${f.goals.home ?? 0} x ${f.goals.away ?? 0}`;
+      statusEl.classList.add("live");
+    } else if (["FT","AET","PEN"].includes(status)) {
+      statusEl.textContent = `Encerrado — Placar final: ${f.goals.home} x ${f.goals.away}`;
+      statusEl.classList.remove("live");
+    } else {
+      statusEl.textContent = `${f.fixture.status.long} — ${formattedDate}`;
+      statusEl.classList.remove("live");
+    }
+
+    checkLockState();
+    renderPalpites();
+  }
+
+  // ======= CONTROLE DE BLOQUEIO (10 min antes do jogo) =======
+  function isLocked() {
+    if (!currentFixture) return false;
+    const matchDate = new Date(currentFixture.fixture.date);
+    const lockTime = new Date(matchDate.getTime() - 10 * 60 * 1000);
+    return new Date() >= lockTime;
+  }
+
+  function checkLockState() {
+    const locked = isLocked();
+    document.getElementById("user-name").disabled = locked;
+    document.getElementById("home-guess").disabled = locked;
+    document.getElementById("away-guess").disabled = locked;
+    document.getElementById("save-btn").disabled = locked;
+
+    const msgArea = document.getElementById("message-area");
+    if (locked) {
+      msgArea.innerHTML = '<div class="lock-msg">⏱ Palpites encerrados — faltam menos de 10 minutos para o jogo.</div>';
+    } else {
+      msgArea.innerHTML = '';
+    }
+  }
+
+  // ======= ARMAZENAMENTO DE PALPITES =======
+  function getPalpites() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function savePalpites(list) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  }
+
+  document.getElementById("save-btn").addEventListener("click", () => {
+    if (isLocked()) return;
+
+    const name = document.getElementById("user-name").value.trim();
+    const homeGuess = document.getElementById("home-guess").value;
+    const awayGuess = document.getElementById("away-guess").value;
+
+    if (!name) {
+      alert("Por favor, digite seu nome.");
+      return;
+    }
+    if (homeGuess === "" || awayGuess === "") {
+      alert("Por favor, informe o placar completo.");
+      return;
+    }
+
+    const palpites = getPalpites();
+
+    // Verifica se a pessoa já enviou um palpite (mesmo nome)
+    const existingIndex = palpites.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
+    const newEntry = {
+      name: name,
+      home: parseInt(homeGuess, 10),
+      away: parseInt(awayGuess, 10),
+      timestamp: new Date().toISOString()
+    };
+
+    if (existingIndex >= 0) {
+      // Atualiza o palpite existente (até o bloqueio)
+      palpites[existingIndex] = newEntry;
+    } else {
+      palpites.push(newEntry);
+    }
+
+    savePalpites(palpites);
+    renderPalpites();
+
+    const msgArea = document.getElementById("message-area");
+    msgArea.innerHTML = '<div class="saved-msg">✅ Palpite salvo com sucesso!</div>';
+
+    document.getElementById("user-name").value = "";
+    document.getElementById("home-guess").value = "";
+    document.getElementById("away-guess").value = "";
+  });
+
+  // ======= RENDER LISTA DE PALPITES =======
+  function renderPalpites() {
+    const palpites = getPalpites();
+    const listEl = document.getElementById("palpites-list");
+    const countEl = document.getElementById("palpites-count");
+    countEl.textContent = palpites.length;
+
+    if (palpites.length === 0) {
+      listEl.innerHTML = '<div class="empty">Nenhum palpite registrado ainda.</div>';
+      return;
+    }
+
+    const f = currentFixture;
+    const finished = f && ["FT","AET","PEN"].includes(f.fixture.status.short);
+    const finalHome = f ? f.goals.home : null;
+    const finalAway = f ? f.goals.away : null;
+
+    listEl.innerHTML = palpites.map(p => {
+      let cssClass = "pending";
+      if (finished) {
+        cssClass = (p.home === finalHome && p.away === finalAway) ? "correct" : "wrong";
+      }
+      return `
+        <div class="palpite-item ${cssClass}">
+          <span>${escapeHtml(p.name)}</span>
+          <span class="palpite-score">${p.home} x ${p.away}</span>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // ======= INICIALIZAÇÃO =======
+  fetchFixture();
+
+  // Atualiza a cada 60 segundos (placar em tempo real + estado de bloqueio)
+  setInterval(fetchFixture, 60000);
+</script>
+
+</body>
+</html>

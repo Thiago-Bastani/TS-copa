@@ -1,0 +1,11 @@
+.git
+.env
+!.env.example
+node_modules
+/public/build
+/public/hot
+storage/logs/*.log
+database/database.sqlite
+*.md
+tests/
+.phpunit.cache
