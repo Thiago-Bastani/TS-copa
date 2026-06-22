@@ -47,16 +47,18 @@ class BetController extends Controller
         $perWinner = null;
 
         if ($match->isFinished()) {
-            $winners    = $match->winners();
-            $count      = $winners->count();
-            $prizePool  = ($match->bet_value ?? 0)/$count;
+            $winners = $match->winners();
+            $count   = $winners->count();
 
-            if ($count > 0 && $prizePool > 0) {
-                $perWinner = number_format($prizePool, 2, ',', '.');
-                foreach ($winners as $winner) {
-                    $amount  = round($prizePool, 2);
-                    $payload = PixPayload::static($winner->user->pix_key, $amount, 'TS Copa');
-                    $qrCodes[$winner->user_id] = (string) QrCode::size(180)->generate($payload);
+            if ($count > 0) {
+                $prizePool = ($match->bet_value ?? 0) / $count;
+                if ($prizePool > 0) {
+                    $perWinner = number_format($prizePool, 2, ',', '.');
+                    foreach ($winners as $winner) {
+                        $amount  = round($prizePool, 2);
+                        $payload = PixPayload::static($winner->user->pix_key, $amount, 'TS Copa');
+                        $qrCodes[$winner->user_id] = (string) QrCode::size(180)->generate($payload);
+                    }
                 }
             }
         }

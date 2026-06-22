@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BetController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => redirect('/matches'));
+Route::redirect('/', '/matches');
 
 // Auth
 Route::middleware('guest')->group(function () {
@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
 
 // Admin
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', fn () => redirect()->route('admin.matches.index'));
+    Route::redirect('/', '/admin/matches');
 
     Route::get('/teams',              [AdminTeamController::class, 'index'])->name('teams.index');
     Route::post('/teams',             [AdminTeamController::class, 'store'])->name('teams.store');
